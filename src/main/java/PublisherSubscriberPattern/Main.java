@@ -1,12 +1,7 @@
 package PublisherSubscriberPattern;
 
 import ing.stockmarket.Investor;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
-import javafx.scene.Group;
-import javafx.scene.control.Label;
 
 
 public class Main {
