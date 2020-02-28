@@ -50,6 +50,7 @@ public class RunnableInstrumentTask implements Runnable {
 					if (z != 0 && lock.getShutDownInstrument().get()) {
 
 						Instruments instrument = InstrumentResourcesLock.getInstrumentsLinkedList().getLast();
+						InstrumentResourcesLock.getInstrumentsLinkedList().add(instrument);
 
 						try {
 							generateInstruments.put(instrument);

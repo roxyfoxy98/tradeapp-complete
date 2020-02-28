@@ -52,13 +52,13 @@ public class Investor {
 
 		logger.info(message.message);
 
-		new File(Configuration.getSUBSCRIBER_FILE_PATH() + subscriberID + " - " + name + " - " + message.message)
+		new File(subscriberID + " - " + name + " - " + message.message)
 				.mkdir();
 
 		for (File file : files) {
 			Files.copy(
-					file.toPath(), (new File(Configuration.getSUBSCRIBER_FILE_PATH() + subscriberID + " - " + name
-							+ " - " + message.message + "\\" + file.getName())).toPath(),
+					file.toPath(), (new File(  subscriberID + " - " + name
+							+ " - " + message.message + "/" + file.getName())).toPath(),
 					StandardCopyOption.REPLACE_EXISTING);
 		}
 	}
@@ -67,17 +67,17 @@ public class Investor {
 
 		List<File> files = new ArrayList<File>();
 
-		files.add(new File("C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Test.csv"));
+		files.add(new File("GeneratedFile/Publisher/Test.csv"));
 
 		logger.info(message.message);
 
-		new File(Configuration.getSUBSCRIBER_FILE_PATH() + subscriberID + " - " + name + " - " + message.message)
+		new File( subscriberID + " - " + name + " - " + message.message)
 				.mkdir();
 
 		for (File file : files) {
 			Files.copy(
-					file.toPath(), (new File(Configuration.getSUBSCRIBER_FILE_PATH() + subscriberID + " - " + name
-							+ " - " + message.message + "\\" + file.getName())).toPath(),
+					file.toPath(), (new File( subscriberID + " - " + name
+							+ " - " + message.message + "/" + file.getName())).toPath(),
 					StandardCopyOption.REPLACE_EXISTING);
 		}
 

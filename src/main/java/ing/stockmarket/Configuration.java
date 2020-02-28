@@ -46,7 +46,7 @@ public class Configuration {
 	private static String USERNAME;
 	private static String PASSWORD;
 
-	private static final String PATH_OF_CONFIGURATION_FILE = "C:\\Users\\LU20WO\\APLICATIE TRADING !!!!!\\tradinginfoapplication-master\\src\\main\\resources\\properties.cfg";
+	private static final String PATH_OF_CONFIGURATION_FILE = "C:\\Users\\MH90UT\\eclipse-workspace\\ProjectPubSub\\src\\main\\resources\\properties.cfg";
 
 	static {
 		Configuration.readProperties();
@@ -281,7 +281,7 @@ public class Configuration {
 
 			if (prop.getProperty("PATH1") == null) {
 
-				prop.setProperty("PATH1", "C:\\Users\\LU20WO\\GeneratedFile\\generatedfile");
+				prop.setProperty("PATH1", "C:\\Users\\MH90UT\\GeneratedFile\\generatedfile");
 				SCHEDULER_RECORDS_PATH = prop.getProperty("PATH1");
 
 			} else {
@@ -291,7 +291,7 @@ public class Configuration {
 
 			if (prop.getProperty("TEST_FILE_PATH") == null) {
 
-				prop.setProperty("TEST_FILE_PATH", "C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Test.csv");
+				prop.setProperty("TEST_FILE_PATH", "C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Test.csv");
 				TEST_FILE_PATH = prop.getProperty("TEST_FILE_PATH");
 
 			} else {
@@ -311,7 +311,7 @@ public class Configuration {
 
 			if (prop.getProperty("DATABASE_URL") == null) {
 
-				prop.setProperty("DATABASE_URL", "jdbc:mysql://localhost:3306/database");
+				prop.setProperty("DATABASE_URL", "jdbc:mysql://localhost:3306/TradingPlatform");
 				DATABASE_URL = prop.getProperty("DATABASE_URL");
 
 			} else {
@@ -331,7 +331,7 @@ public class Configuration {
 
 			if (prop.getProperty("PASSWORD") == null) {
 
-				prop.setProperty("PASSWORD", "p@ss");
+				prop.setProperty("PASSWORD", "manolached");
 				PASSWORD = prop.getProperty("PASSWORD");
 
 			} else {
@@ -341,7 +341,7 @@ public class Configuration {
 
 			if (prop.getProperty("SUBSCRIBER_FILE_PATH") == null) {
 
-				prop.setProperty("SUBSCRIBER_FILE_PATH", "C:\\Users\\LU20WO\\GeneratedFile\\Subscriber\\Subscriber");
+				prop.setProperty("SUBSCRIBER_FILE_PATH", "C:\\Users\\MH90UT\\GeneratedFile\\Subscriber\\Subscriber");
 				SUBSCRIBER_FILE_PATH = prop.getProperty("SUBSCRIBER_FILE_PATH");
 
 			} else {
@@ -352,7 +352,7 @@ public class Configuration {
 			if (prop.getProperty("TRANSACTION_FILE_PATH") == null) {
 
 				prop.setProperty("TRANSACTION_FILE_PATH",
-						"C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Transactions.csv");
+						"C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Transactions.csv");
 				TRANSACTION_FILE_PATH = prop.getProperty("TRANSACTION_FILE_PATH");
 
 			} else {
@@ -362,7 +362,7 @@ public class Configuration {
 
 			if (prop.getProperty("CUSTOMER_FILE_PATH") == null) {
 
-				prop.setProperty("CUSTOMER_FILE_PATH", "C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Customers.csv");
+				prop.setProperty("CUSTOMER_FILE_PATH", "C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Customers.csv");
 				CUSTOMER_FILE_PATH = prop.getProperty("CUSTOMER_FILE_PATH");
 
 			} else {
@@ -373,7 +373,7 @@ public class Configuration {
 			if (prop.getProperty("INSTRUMENT_FILE_PATH") == null) {
 
 				prop.setProperty("INSTRUMENT_FILE_PATH",
-						"C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Instruments.csv");
+						"C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Instruments.csv");
 				INSTRUMENT_FILE_PATH = prop.getProperty("INSTRUMENT_FILE_PATH");
 
 			} else {
@@ -384,7 +384,7 @@ public class Configuration {
 			if (prop.getProperty("TRANSACTION_CSVFILE_PATH") == null) {
 
 				prop.setProperty("TRANSACTION_CSVFILE_PATH",
-						"C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Transactions.csv");
+						"C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Transactions.csv");
 				TRANSACTION_CSVFILE_PATH = prop.getProperty("TRANSACTION_CSVFILE_PATH");
 
 			} else {
@@ -395,7 +395,7 @@ public class Configuration {
 			if (prop.getProperty("CUSTOMERS_CSVFILE_PATH;") == null) {
 
 				prop.setProperty("CUSTOMERS_CSVFILE_PATH;",
-						"C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Customers.csv");
+						"C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Customers.csv");
 				CUSTOMERS_CSVFILE_PATH = prop.getProperty("CUSTOMERS_CSVFILE_PATH;");
 
 			} else {
@@ -406,7 +406,7 @@ public class Configuration {
 			if (prop.getProperty("INSTRUMENTS_CSVFILE_PATH;") == null) {
 
 				prop.setProperty("INSTRUMENTS_CSVFILE_PATH;",
-						"C:\\Users\\LU20WO\\GeneratedFile\\Publisher\\Instruments.csv");
+						"C:\\Users\\MH90UT\\GeneratedFile\\Publisher\\Instruments.csv");
 				INSTRUMENTS_CSVFILE_PATH = prop.getProperty("INSTRUMENTS_CSVFILE_PATH;");
 
 			} else {
@@ -466,7 +466,7 @@ public class Configuration {
 
 			if (prop.getProperty("PATH") == null) {
 
-				prop.setProperty("PATH", "C:\\Users\\LU20WO\\GeneratedFile\\file.csv");
+				prop.setProperty("PATH", "C:\\Users\\MH90UT\\GeneratedFile\\file.csv");
 				GENERATOR_PATH = prop.getProperty("PATH");
 
 			} else {
@@ -476,7 +476,7 @@ public class Configuration {
 
 			if (prop.getProperty("RECORDS_PATH") == null) {
 
-				prop.setProperty("RECORDS_PATH", "C:\\Users\\LU20WO\\GeneratedFile\\Records.csv");
+				prop.setProperty("RECORDS_PATH", "C:\\Users\\MH90UT\\GeneratedFile\\Records.csv");
 				RECORDS_PATH = prop.getProperty("RECORDS_PATH");
 
 			} else {

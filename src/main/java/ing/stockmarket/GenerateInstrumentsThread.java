@@ -13,9 +13,12 @@ public class GenerateInstrumentsThread implements Runnable {
 
 	BlockingQueue<Instruments> generateInstruments;
 
-	public static int k = 0;
+	String[] descriptionOfInstruments = new String[] { "Loan", "Bond", "Stock", "Fund", "Option", "Future", "Swap",
+			"Currency" };
 
-	public static int y = 0;
+	private static int k = 0;
+
+	private static int y = 0;
 
 	public GenerateInstrumentsThread(InstrumentResourcesLock lock, BlockingQueue<Instruments> generateInstruments) {
 
@@ -23,6 +26,11 @@ public class GenerateInstrumentsThread implements Runnable {
 
 		this.generateInstruments = generateInstruments;
 
+	}
+
+	public static int incrementInstrumentSymbol() {
+
+		return ++k;
 	}
 
 	@Override
@@ -54,19 +62,19 @@ public class GenerateInstrumentsThread implements Runnable {
 
 					instrument.setSymbol(++k);
 
-					instrument.setDescription("Some_description" + (k));
+					instrument.setDescription(descriptionOfInstruments[rand.nextInt(descriptionOfInstruments.length)]);
 
-					instrument.setMarginRate(rand.nextInt(1));
+					instrument.setMarginRate(rand.nextInt(4) + 1);
 
-					instrument.setMinTradeVolume(rand.nextDouble());
+					instrument.setMinTradeVolume(rand.nextDouble() + 1);
 
-					instrument.setMaxTradeVolume(rand.nextDouble());
+					instrument.setMaxTradeVolume(rand.nextDouble() + 4);
 
-					instrument.setNominalValueOf1Lot(k);
+					instrument.setNominalValueOf1Lot(rand.nextInt(15));
 
-					instrument.setPipValue(rand.nextDouble());
+					instrument.setPipValue(rand.nextDouble() + 1);
 
-					instrument.setTradingHours(24);
+					instrument.setTradingHours(rand.nextInt(24) + 1);
 
 					generateInstruments.put(instrument);
 

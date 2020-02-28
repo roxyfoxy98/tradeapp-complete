@@ -49,8 +49,18 @@ public class RunnableCustomerTask implements Runnable {
 
 					if (z != 0 && lock.getShutDownCustomer().get()) {
 
-						Customers customer = CustomerResourcesLock.getCustomersLinkedList().getLast();
+						//Customers customer = new Customers();
 
+						//customer.setID(GenerateCustomerThread.incrementCustomerID());
+						//customer.setName(CustomerResourcesLock.getCustomersLinkedList().getLast().getName());
+						//customer.setAge(CustomerResourcesLock.getCustomersLinkedList().getLast().getAge());
+						//customer.setAddress(CustomerResourcesLock.getCustomersLinkedList().getLast().getAddress());
+						//customer.setSex(CustomerResourcesLock.getCustomersLinkedList().getLast().getSex());
+						//customer.setPhone(CustomerResourcesLock.getCustomersLinkedList().getLast().getPhone());
+
+						 Customers customer =CustomerResourcesLock.getCustomersLinkedList().getLast();
+
+						CustomerResourcesLock.getCustomersLinkedList().add(customer);
 						try {
 							generateCustomers.put(customer);
 
@@ -59,8 +69,7 @@ public class RunnableCustomerTask implements Runnable {
 							logger.error(e.getMessage());
 						}
 
-						logger.info(
-								"Start writing into file: " + Configuration.getSCHEDULER_RECORDS_PATH() + "113.csv");
+						logger.info("Start writing into file: " + Configuration.getCUSTOMERS_CSVFILE_PATH());
 
 						logger.info("The duplicated transaction is: " + "\t ID:  " + customer.getID() + "\t Name:  "
 								+ customer.getName() + "\t Address:  " + customer.getAddress() + "\t Phone:  "
@@ -76,6 +85,7 @@ public class RunnableCustomerTask implements Runnable {
 			} catch (Exception e) {
 
 				logger.error("Error arised from Customer Duplicator!");
+
 			} finally {
 
 				lock.getCustomerFlag().set(true);

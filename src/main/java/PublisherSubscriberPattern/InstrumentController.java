@@ -28,10 +28,10 @@ public class InstrumentController {
             Investor subscriber5 = new Investor("John");
             Investor subscriber6 = new Investor("Marian");
 */
-            Message message1 = new Message("Test");
-            Message message = new Message("Transaction");
+            //Message message1 = new Message("Test");
+          //  Message message = new Message("Transaction");
 
-            Event.stockMarketReference.subscribe("Transaction", subscriber1);
+           // Event.stockMarketReference.subscribe("Transaction", subscriber1);
             /*Event.stockMarketReference.subscribe("Transaction", subscriber2);
             Event.stockMarketReference.subscribe("Transaction", subscriber3);
             Event.stockMarketReference.subscribe("Transaction", subscriber4);
@@ -39,10 +39,10 @@ public class InstrumentController {
             Event.stockMarketReference.subscribe("Test", subscriber6);
             Event.stockMarketReference.subscribe("Transaction", subscriber6);
 */
-            Event.stockMarketReference.publish("Transaction", message);
+           // Event.stockMarketReference.publish("Transaction", message);
             //Event.stockMarketReference.publish("Test", message1);
 
-            return WriteInstrumentsInCSVFile.listforfrontinstruments;
+            return WriteInstrumentsInCSVFile.frontlistinstr;
 
         }
     }

@@ -15,9 +15,10 @@ public class WriteInstrumentsInCSVFile implements Runnable {
 	static Logger logger = Logger.getLogger(WriteInstrumentsInCSVFile.class);
 
 	InstrumentResourcesLock lock;
-	public static List<Instruments> listforfrontinstruments=new ArrayList<>();
 
 	BlockingQueue<Instruments> generateInstruments;
+
+	public static List<Instruments> frontlistinstr=new ArrayList<>();
 
 	public WriteInstrumentsInCSVFile(InstrumentResourcesLock lock, BlockingQueue<Instruments> generateInstruments) {
 
@@ -47,7 +48,7 @@ public class WriteInstrumentsInCSVFile implements Runnable {
 					Instruments instrument = generateInstruments.take();
 
 					InstrumentResourcesLock.getInstrumentsLinkedList().add(instrument);
-					listforfrontinstruments.add(instrument);
+					frontlistinstr.add(instrument);
 
 					logger.info("Start writing into file: " + Configuration.getINSTRUMENTS_CSVFILE_PATH());
 

@@ -1,33 +1,40 @@
 package ing.stockmarket;
 
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Instrument")
 public class Instruments {
 
+	@Id
+	@Column(name = "INSTRUMENT_ID")
 	private int symbol;
+
+	@Column(name = "DESCRIPTION", nullable = false)
 	private String description;
+
+	@Column(name = "NOMINAL_VALUE_OF_1_LOT", nullable = false)
 	private int nominalValueOf1Lot;
+
+	@Column(name = "PIP_VALUE", nullable = false)
 	private double pipValue;
+
+	@Column(name = "MIN_TRADE_VOLUME", nullable = false)
 	private double minTradeVolume;
+
+	@Column(name = "MAX_TRADE_VOLUME", nullable = false)
 	private double maxTradeVolume;
+
+	@Column(name = "MARGIN_RATE", nullable = false)
 	private double marginRate;
+
+	@Column(name = "TRADING_HOURS", nullable = false)
 	private float tradingHours;
 
-
-
-	public Instruments(int symbol, String description, int nominalValueOf1Lot, double pipValue, double minTradeVolume, double maxTradeVolume, double marginRate, float tradingHours) {
-		this.symbol = symbol;
-		this.description = description;
-		this.nominalValueOf1Lot = nominalValueOf1Lot;
-		this.pipValue = pipValue;
-		this.minTradeVolume = minTradeVolume;
-		this.maxTradeVolume = maxTradeVolume;
-		this.marginRate = marginRate;
-		this.tradingHours = tradingHours;
-	}
-
-	public Instruments  ()
-	{
-
-	}
 	public int getSymbol() {
 		return symbol;
 	}
@@ -112,5 +119,4 @@ public class Instruments {
 
 		this.tradingHours = tradingHours;
 	}
-
 }

@@ -13,8 +13,8 @@ public class GenerateTransactionsThread implements Runnable {
 
 	BlockingQueue<Transaction> generateTransaction;
 
-	static int i = 0;
-	static int o = 1;
+	private static int i = 0;
+	private static int o = 1;
 
 	public GenerateTransactionsThread(TransactionResourcesLock lock, BlockingQueue<Transaction> generateTransaction) {
 
@@ -22,6 +22,11 @@ public class GenerateTransactionsThread implements Runnable {
 
 		this.generateTransaction = generateTransaction;
 
+	}
+
+	public static int incrementTransactionID() {
+
+		return ++i;
 	}
 
 	public void run() {
@@ -32,7 +37,7 @@ public class GenerateTransactionsThread implements Runnable {
 		synchronized (lock) {
 			try {
 
-				for (int j = 0; j < 15; j++) {
+				for (int j = 0; j < 2000; j++) {
 
 					while (lock.getSwitchingTransactionFlag() != 1 || !lock.getTransactionFlag().get()) {
 
@@ -44,7 +49,7 @@ public class GenerateTransactionsThread implements Runnable {
 						}
 					}
 
-					if (j == 14) {
+					if (j == 1999) {
 
 						lock.getShutDownTransaction().set(false);
 					}
@@ -54,19 +59,20 @@ public class GenerateTransactionsThread implements Runnable {
 
 					trans.setAsk(Math.round(Configuration.getMin_Ask()
 							+ (double) (Math.random() * ((Configuration.getMax_Ask() - Configuration.getMin_Ask()) + 1))
-									* 100.0)
+							* 100.0)
 							/ 100.0);
 
 					trans.setBid(Math.round(Configuration.getMin_Bid()
 							+ (double) (Math.random() * ((Configuration.getMax_Bid() - Configuration.getMin_Bid()) + 1))
-									* 100.0)
+							* 100.0)
 							/ 100.0);
 
 					trans.setQty(rand.nextInt(200));
+					trans.setTIME_LIMIT(rand.nextInt(30));
 
 					generateTransaction.put(trans);
 
-					Thread.sleep(14);
+					Thread.sleep(2);
 
 				}
 

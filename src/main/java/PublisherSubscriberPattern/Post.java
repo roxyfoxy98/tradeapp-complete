@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -75,17 +76,30 @@ public class Post {
 			futureList.add(Utils.getExecutorService()
 					.submit(new GenerateTransactionAndWriteInCSVFile(transactionResourcesLock, instrumentResourcesLock,
 							customerResourcesLock, blockingQueueTransactions, blockingQueueInstruments,
-							blockingQueueCustomers, 5000)));
+							blockingQueueCustomers, 12000)));
 
 			futureList.add(Utils.getExecutorService()
 					.submit(new GenerateTransactionAndWriteInCSVFile(transactionResourcesLock, instrumentResourcesLock,
 							customerResourcesLock, blockingQueueTransactions, blockingQueueInstruments,
-							blockingQueueCustomers, 10000)));
+							blockingQueueCustomers, 24000)));
+
+			Utils.getSchedulerExecutorService()
+					.scheduleAtFixedRate(new RunnableInstrumentTask("Instrument Duplicator Thread ",
+							instrumentResourcesLock, blockingQueueInstruments), 2, 10, TimeUnit.SECONDS);
+			Utils.getSchedulerExecutorService()
+					.scheduleAtFixedRate(new RunnableCustomerTask("Customer Duplicator Thread ", customerResourcesLock,
+							blockingQueueCustomers), 2, 10, TimeUnit.SECONDS);
+
+			Utils.getSchedulerExecutorService()
+					.scheduleAtFixedRate(new RunnableTransactionTask("Transaction Duplicator Thread ",
+							transactionResourcesLock, blockingQueueTransactions), 2, 10, TimeUnit.SECONDS);
 
 			for (Future future : futureList) {
 
 				future.get();
 			}
+
+			Utils.shutDownTheExecutor(Utils.getSchedulerExecutorService(), "ScheduledExecutorService");
 
 		} catch (Exception e) {
 

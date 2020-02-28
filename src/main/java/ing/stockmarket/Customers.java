@@ -1,12 +1,31 @@
 package ing.stockmarket;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Customer")
 public class Customers {
 
+	@Id
+	@Column(name = "CUSTOMER_ID")
 	private int ID;
+
+	@Column(name = "NAME", nullable = false)
 	private String name;
+
+	@Column(name = "AGE", nullable = false)
 	private int age;
+
+	@Column(name = "ADDRESS", nullable = false)
 	private String address;
+
+	@Column(name = "SEX", nullable = false)
 	private char sex;
+
+	@Column(name = "PHONE", nullable = false)
 	private int phone;
 
 	public int getID() {

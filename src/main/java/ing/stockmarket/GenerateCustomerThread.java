@@ -1,5 +1,6 @@
 package ing.stockmarket;
 
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
@@ -12,9 +13,16 @@ public class GenerateCustomerThread implements Runnable {
 
 	BlockingQueue<Customers> generateCustomers;
 
-	public static int n = 0;
-	public static int m = 0;
-	public static int e = 0;
+	String[] address = new String[] { "3 Westminster St.Anderson, SC 29621", "290 Parker Street Valparaiso, IN 46383",
+			"596 South Lookout Rd.Watertown, MA 02472", "9 South Primrose Street Huntersville, NC 28078",
+			"7168 Lees Creek Avenue" , "Ypsilanti, MI 48197", "7147 Maple St.Unit 858", "Roy UT 84067" };
+
+	String[] name = new String[] { "Haley Ellithorpe", "Robert Carr", "Hector Niday", "Eneida Wyllie",
+			"Russell Desalvo", "Timothy Ramsden", "Preston Jaycox" };
+
+	char[] sex = new char[] { 'M', 'F' };
+
+	private static int n = 0;
 
 	public GenerateCustomerThread(CustomerResourcesLock lock, BlockingQueue<Customers> generateCustomers) {
 
@@ -24,15 +32,22 @@ public class GenerateCustomerThread implements Runnable {
 
 	}
 
+	public static int incrementCustomerID() {
+
+		return ++n;
+	}
+
 	@Override
 	public void run() {
 
 		logger.info("Start generating a random array of customers!");
 
+		Random rand = new Random();
+
 		synchronized (lock) {
 			try {
 
-				for (int j = 0; j < 50; j++) {
+				for (int j = 0; j < 100; j++) {
 
 					while (lock.getSwitchingCustomerFlag() != 1 && lock.getCustomerFlag().get()) {
 
@@ -44,7 +59,7 @@ public class GenerateCustomerThread implements Runnable {
 						}
 					}
 
-					if (j == 49) {
+					if (j == 99) {
 						lock.getShutDownCustomer().set(false);
 					}
 
@@ -52,23 +67,21 @@ public class GenerateCustomerThread implements Runnable {
 
 					customer.setID(++n);
 
-					customer.setAddress("Street" + n);
+					customer.setAddress(address[rand.nextInt(address.length)]);
 
 					customer.setAge(18 + (int) (Math.random() * ((64 - 18) + 1)));
 
-					customer.setName("Name" + (n));
+					customer.setName(name[rand.nextInt(name.length)]);
 
-					customer.setPhone(223443 + (n));
+					customer.setPhone(223443 + n);
 
-					customer.setSex('M');
+					customer.setSex(sex[rand.nextInt(sex.length)]);
 
 					generateCustomers.put(customer);
 
 					Thread.sleep(15);
 
 				}
-
-				Thread.sleep(2000);
 
 			} catch (Exception e) {
 

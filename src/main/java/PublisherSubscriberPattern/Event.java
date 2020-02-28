@@ -9,7 +9,7 @@ public class Event {
 		init();
 	}
 
-	static StockMarket stockMarketReference;
+	public static StockMarket stockMarketReference;
 
 	static ConcurrentHashMap<String, ConcurrentHashMap<Integer, WeakReference<Object>>> channels;
 

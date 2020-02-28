@@ -24,7 +24,7 @@ public class RunnableTransactionTask implements Runnable {
 	}
 
 	public RunnableTransactionTask(String name, TransactionResourcesLock lock,
-			BlockingQueue<Transaction> generateTransaction) {
+								   BlockingQueue<Transaction> generateTransaction) {
 
 		threadName = name;
 		this.lock = lock;
@@ -48,13 +48,28 @@ public class RunnableTransactionTask implements Runnable {
 				if (lock.getTransactionFlag().compareAndSet(true, false)) {
 
 					if (z != 0 && lock.getShutDownTransaction().get()) {
-
 						Transaction transaction = TransactionResourcesLock.getTransactionLinkedList().getLast();
 
-						int valueOfQTY = transaction.getQty();
+						//Transaction transaction = new Transaction();
 
-						transaction.setBid(valueOfQTY);
+						//transaction.setId(GenerateTransactionsThread.incrementTransactionID());
+						/*transaction.setAsk(TransactionResourcesLock.getTransactionLinkedList().getLast().getAsk());
+						transaction.setBid(TransactionResourcesLock.getTransactionLinkedList().getLast().getBid());
+						transaction.setQty(TransactionResourcesLock.getTransactionLinkedList().getLast().getQty());
+						transaction.setTIME_LIMIT(
+								TransactionResourcesLock.getTransactionLinkedList().getLast().getTIME_LIMIT());
+						transaction.setInstrument_id(
+								TransactionResourcesLock.getTransactionLinkedList().getLast().getInstrument_id());
+						transaction.setCustomer_id(
+								TransactionResourcesLock.getTransactionLinkedList().getLast().getCustomer_id());
+						double valueOfQTY = transaction.getAsk();
 
+						*/
+
+						//transaction.setBid(valueOfQTY);
+
+
+						TransactionResourcesLock.getTransactionLinkedList().add(transaction);
 						try {
 
 							generateTransaction.put(transaction);
@@ -64,8 +79,7 @@ public class RunnableTransactionTask implements Runnable {
 							logger.error(e.getMessage());
 						}
 
-						logger.info(
-								"Start writing into file: " + Configuration.getSCHEDULER_RECORDS_PATH() + "111.csv");
+						logger.info("Start writing into file: " + Configuration.getTRANSACTION_CSVFILE_PATH());
 
 						logger.info("The duplicated transaction is: " + "\t ID:  " + transaction.getId() + "\t BID:  "
 								+ transaction.getBid() + "\t ASK:  " + transaction.getAsk() + "\t QTY:  "

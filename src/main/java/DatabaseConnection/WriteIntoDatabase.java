@@ -22,6 +22,15 @@ public class WriteIntoDatabase implements Runnable {
 
 	Connection conn = null;
 	Statement stmt = null;
+	String sql;
+
+	String sql1;
+	String sql2;
+	String sql3;
+	String sql4;
+	String sql5;
+	String sql6;
+	String sql7;
 
 	@Override
 	public void run() {
@@ -41,12 +50,6 @@ public class WriteIntoDatabase implements Runnable {
 			stmt = conn.createStatement();
 
 			logger.info("Delete all records from TradingPlatform database tables!");
-
-			String sql3;
-			String sql4;
-			String sql5;
-			String sql6;
-			String sql7;
 
 			sql3 = "ALTER TABLE Transaction " + "DROP FOREIGN KEY Transaction_ibfk_1,"
 					+ " DROP FOREIGN KEY Transaction_ibfk_2;";
@@ -73,8 +76,6 @@ public class WriteIntoDatabase implements Runnable {
 				// STEP 4: Execute a query
 				logger.info("Creating the customer record!");
 
-				String sql;
-
 				sql = "Insert into Customer (CUSTOMER_ID,NAME,AGE,ADDRESS,SEX,PHONE) values (" + customer.getID() + ","
 						+ "'" + customer.getName() + "'" + "," + customer.getAge() + "," + "'" + customer.getAddress()
 						+ "'" + "," + "'" + customer.getSex() + "'" + "," + customer.getPhone() + ");";
@@ -86,8 +87,6 @@ public class WriteIntoDatabase implements Runnable {
 
 				// STEP 4: Execute a query
 				logger.info("Creating the instrument record!");
-
-				String sql1;
 
 				sql1 = "Insert into Instrument (INSTRUMENT_ID,DESCRIPTION,NOMINAL_VALUE_OF_1_LOT,PIP_VALUE,MIN_TRADE_VOLUME,MAX_TRADE_VOLUME,MARGIN_RATE,TRADING_HOURS) values ("
 						+ instrument.getSymbol() + "," + "'" + instrument.getDescription() + "'" + ","
@@ -112,8 +111,6 @@ public class WriteIntoDatabase implements Runnable {
 				// STEP 4: Execute a query
 				logger.info("Creating the transaction record!");
 
-				String sql2;
-
 				sql2 = "Insert into Transaction (TRANSACTION_ID,ASK,BID,QTY,CUSTOMER_ID,INSTRUMENT_ID) values ("
 						+ transaction.getId() + "," + transaction.getAsk() + "," + transaction.getBid() + ","
 						+ transaction.getQty() + "," + customer.getID() + "," + instrument.getSymbol() + ");";
@@ -131,14 +128,15 @@ public class WriteIntoDatabase implements Runnable {
 
 		} catch (
 
-		SQLException se) {
+				SQLException se) {
 			// Handle errors for JDBC
 			logger.error(se.getMessage());
 
-			this.closeConnection();
 		} catch (Exception e) {
+
 			// Handle errors for Class.forName
 			e.printStackTrace();
+
 			this.closeConnection();
 		} finally {
 			// finally block used to close resources

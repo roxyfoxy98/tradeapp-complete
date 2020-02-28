@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -23,32 +24,17 @@ public class Utils {
 	private Utils() {
 	}
 
-	/*
-	 * private ScheduledExecutorService schedulerExecutorService =
-	 * Executors.newScheduledThreadPool( Runtime.getRuntime().availableProcessors(),
-	 * new MyThreadFactory("ScheduledExecutorService"));
-	 */
+	private static ScheduledExecutorService schedulerExecutorService = Executors.newScheduledThreadPool(
+			Runtime.getRuntime().availableProcessors(), new MyThreadFactory("ScheduledExecutorService"));
 
 	// Runtime.getRuntime().availableProcessors()
 
 	private static ExecutorService executorService = Executors
 			.newFixedThreadPool(Runtime.getRuntime().availableProcessors(), new MyThreadFactory("ExecutorService"));
 
-	/*
-	 * private ExecutorService executorServiceDataBase =
-	 * Executors.newFixedThreadPool( Runtime.getRuntime().availableProcessors(), new
-	 * MyThreadFactory("Database ExecutorService"));
-	 */
-
-	/*
-	 * public ExecutorService getExecutorServiceDataBase() { return
-	 * executorServiceDataBase; }
-	 */
-
-	/*
-	 * public ScheduledExecutorService getSchedulerExecutorService() { return
-	 * schedulerExecutorService; }
-	 */
+	public static ScheduledExecutorService getSchedulerExecutorService() {
+		return schedulerExecutorService;
+	}
 
 	public static ExecutorService getExecutorService() {
 		return executorService;
@@ -67,59 +53,59 @@ public class Utils {
 			reader = new BufferedReader(new FileReader(path));
 
 			switch (typeOfReading) {
-			case LESS:
+				case LESS:
 
-				while ((line = reader.readLine()) != null) {
-					String[] fields = line.split(",");
+					while ((line = reader.readLine()) != null) {
+						String[] fields = line.split(",");
 
-					if (Integer.parseInt(fields[3]) < qty) {
+						if (Integer.parseInt(fields[3]) < qty) {
+							Transaction trans = new Transaction();
+							trans.setId((Integer.parseInt(fields[0])));
+							trans.setAsk(Double.parseDouble(fields[1]));
+							trans.setBid(Double.parseDouble(fields[2]));
+							trans.setQty(Integer.parseInt(fields[3]));
+							transactionList.add(trans);
+						}
+
+					}
+					break;
+
+				case GREATER:
+
+					while ((line = reader.readLine()) != null) {
+						String[] fields = line.split(",");
+
+						if (Integer.parseInt(fields[3]) > qty) {
+							Transaction trans = new Transaction();
+							trans.setId((Integer.parseInt(fields[0])));
+							trans.setAsk(Double.parseDouble(fields[1]));
+							trans.setBid(Double.parseDouble(fields[2]));
+							trans.setQty(Integer.parseInt(fields[3]));
+							transactionList.add(trans);
+						}
+
+					}
+
+					break;
+
+				case DEFAULT:
+
+					while ((line = reader.readLine()) != null) {
+						String[] fields = line.split(",");
+
 						Transaction trans = new Transaction();
 						trans.setId((Integer.parseInt(fields[0])));
 						trans.setAsk(Double.parseDouble(fields[1]));
 						trans.setBid(Double.parseDouble(fields[2]));
 						trans.setQty(Integer.parseInt(fields[3]));
 						transactionList.add(trans);
+
 					}
 
-				}
-				break;
+					break;
 
-			case GREATER:
-
-				while ((line = reader.readLine()) != null) {
-					String[] fields = line.split(",");
-
-					if (Integer.parseInt(fields[3]) > qty) {
-						Transaction trans = new Transaction();
-						trans.setId((Integer.parseInt(fields[0])));
-						trans.setAsk(Double.parseDouble(fields[1]));
-						trans.setBid(Double.parseDouble(fields[2]));
-						trans.setQty(Integer.parseInt(fields[3]));
-						transactionList.add(trans);
-					}
-
-				}
-
-				break;
-
-			case DEFAULT:
-
-				while ((line = reader.readLine()) != null) {
-					String[] fields = line.split(",");
-
-					Transaction trans = new Transaction();
-					trans.setId((Integer.parseInt(fields[0])));
-					trans.setAsk(Double.parseDouble(fields[1]));
-					trans.setBid(Double.parseDouble(fields[2]));
-					trans.setQty(Integer.parseInt(fields[3]));
-					transactionList.add(trans);
-
-				}
-
-				break;
-
-			default:
-				break;
+				default:
+					break;
 			}
 
 		} catch (Exception ex) {

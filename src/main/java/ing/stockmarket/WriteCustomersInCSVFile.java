@@ -3,7 +3,9 @@ package ing.stockmarket;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
@@ -17,6 +19,9 @@ public class WriteCustomersInCSVFile implements Runnable {
 	BlockingQueue<Customers> generateCustomers;
 
 	int counter = 0;
+
+	public static List<Customers> listforfrontcus=new ArrayList<>();
+
 
 	public WriteCustomersInCSVFile(CustomerResourcesLock lock, BlockingQueue<Customers> generateCustomers) {
 
@@ -44,6 +49,7 @@ public class WriteCustomersInCSVFile implements Runnable {
 					Customers customer = generateCustomers.take();
 
 					CustomerResourcesLock.getCustomersLinkedList().add(customer);
+					listforfrontcus.add(customer);
 
 					logger.info("Start writing into file: " + Configuration.getCUSTOMERS_CSVFILE_PATH());
 					fileWriter.append(String.valueOf(customer.getID()));

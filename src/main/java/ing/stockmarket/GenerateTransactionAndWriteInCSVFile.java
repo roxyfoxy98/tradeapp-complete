@@ -21,9 +21,9 @@ public class GenerateTransactionAndWriteInCSVFile implements Runnable {
 	// Constructor to run all threads
 
 	public GenerateTransactionAndWriteInCSVFile(TransactionResourcesLock transactionResourcesLock,
-			InstrumentResourcesLock instrumentResourcesLock, CustomerResourcesLock customerResourcesLock,
-			BlockingQueue<Transaction> blockingQueueTransactions, BlockingQueue<Instruments> blockingQueueInstruments,
-			BlockingQueue<Customers> blockingQueueCustomers, long sleep) {
+												InstrumentResourcesLock instrumentResourcesLock, CustomerResourcesLock customerResourcesLock,
+												BlockingQueue<Transaction> blockingQueueTransactions, BlockingQueue<Instruments> blockingQueueInstruments,
+												BlockingQueue<Customers> blockingQueueCustomers, long sleep) {
 
 		this.transactionResourcesLock = transactionResourcesLock;
 		this.instrumentResourcesLock = instrumentResourcesLock;
