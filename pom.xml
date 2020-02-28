@@ -91,19 +91,9 @@
 		<version>6.8.8</version>
 		<scope>test</scope>
 	</dependency>
-		<dependency>
-			<groupId>jdk.tools</groupId>
-			<artifactId>jdk.tools</artifactId>
-			<version>1.7.0_05</version>
-			<scope>system</scope>
-			<systemPath>/Users/danielavoica/Documents/apache-maven-3.6.3/maven-core/src/test/projects/project-builder/it0063/jdk/lib/tools.jar</systemPath>
-		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.oracle.jdbc/ojdbc8 -->
-		<dependency>
-			<groupId>com.oracle.jdbc</groupId>
-			<artifactId>ojdbc8</artifactId>
-			<version>12.2.0.1</version>
-		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
