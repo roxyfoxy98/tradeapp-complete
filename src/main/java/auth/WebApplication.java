@@ -18,7 +18,7 @@ public class WebApplication {
         //Investor subscriber4 = new Investor("Marian");
         //Investor subscriber5 = new Investor("John");
         //Investor subscriber6 = new Investor("Marian");
-
+    //aa, ai mysql work de fapt nu, am doar mysql :))))) Pune si mysql work bench plz :D
         Message message1 = new Message("Test");
         Message message = new Message("Transaction");
 
