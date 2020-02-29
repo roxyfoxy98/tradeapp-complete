@@ -1,6 +1,7 @@
 package auth.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
@@ -9,9 +10,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique=true, length=100)
+    @NotBlank(message="Username is required")
     private String username;
-
+    @NotBlank(message="Password field is required")
     private String password;
 
     @Transient

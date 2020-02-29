@@ -1,10 +1,15 @@
 package auth.web;
 
 import auth.model.User;
+import auth.service.MapValidationErrorServices;
 import auth.service.SecurityService;
 import auth.service.UserService;
- import auth.validator.UserValidator;
+import auth.service.UserServiceImpl;
+import auth.validator.UserValidator;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,14 +20,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private SecurityService securityService;
 
     @Autowired
     private UserValidator userValidator;
-
+    @Autowired
+    private MapValidationErrorServices mapValidationErrorServices;
     @GetMapping("/registration")
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
@@ -31,18 +37,19 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public ResponseEntity<?> registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
         userValidator.validate(userForm, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        }
+        ResponseEntity<?> errorMap = mapValidationErrorServices.validaetMapError(bindingResult);
+        if (errorMap != null) return errorMap;
+        //if (bindingResult.hasErrors()) {
+          //  return "registration";
+        //}
 
         userService.save(userForm);
 
-        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/welcome";
+        //securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
+        return new ResponseEntity<String>("User registered", HttpStatus.CREATED);
+        //return "redirect:/welcome";
     }
 
     @GetMapping("/login")
