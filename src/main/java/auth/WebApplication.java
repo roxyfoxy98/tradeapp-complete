@@ -1,14 +1,19 @@
 package auth;
-import ing.stockmarket.*;
-
 import PublisherSubscriberPattern.Event;
 import PublisherSubscriberPattern.Message;
 import ing.stockmarket.Investor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication (scanBasePackages = { "PublisherSubscriberPattern", "auth"})
 public class WebApplication {
+
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     public static void main(String[] args) throws Exception {
         SpringApplication.run(WebApplication.class, args);
 
