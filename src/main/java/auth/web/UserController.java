@@ -1,63 +1,80 @@
 package auth.web;
 
-import auth.model.User;
-import auth.service.SecurityService;
-import auth.service.UserService;
- import auth.validator.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
-@Controller
+import auth.model.User;
+import auth.payload.JWTLoginSucessReponse;
+import auth.payload.LoginRequest;
+import auth.security.JwtTokenProvider;
+import auth.service.MapValidationErrorService;
+import auth.service.UserService;
+import auth.validator.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+
+import static auth.security.SecurityConstants.TOKEN_PREFIX;
+
+@RestController
+@RequestMapping("/api/users")
 public class UserController {
+
+    @Autowired
+    private MapValidationErrorService mapValidationErrorService;
+
     @Autowired
     private UserService userService;
 
     @Autowired
-    private SecurityService securityService;
-
-    @Autowired
     private UserValidator userValidator;
 
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
-        return "registration";
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap != null) return errorMap;
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUsername(),
+                        loginRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = TOKEN_PREFIX +  tokenProvider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt));
     }
 
-    @PostMapping("/registration")
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
-        userValidator.validate(userForm, bindingResult);
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result){
+        // Validate passwords match
+        userValidator.validate(user,result);
 
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        }
+        ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+        if(errorMap != null)return errorMap;
 
-        userService.save(userForm);
+        User newUser = userService.saveUser(user);
 
-        securityService.autoLogin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/welcome";
-    }
-
-    @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
-
-        return "login";
-    }
-
-    @GetMapping({"/", "/welcome"})
-    public String welcome(Model model) {
-        return "welcome";
+        return  new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
 }
