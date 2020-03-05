@@ -1,48 +1,26 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Landing from './components/Layout/Landing';
+import Instruments from './components/Layout/Instruments';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Login from './components/userManagement/Login';
+import Register from './components/userManagement/Register';
+import RegisterSuccess from './components/userManagement/RegisterSuccess';
 
 class App extends Component {
-  state = {
-    todos: []
-  }
-  componentDidMount() {
-    fetch('/instruments')
-    .then(res => res.json())
-    .then((data) => {
-      this.setState({ todos: data })
-      console.log(this.state.todos)
-    })
-    .catch(console.log)
-  }
-  render() {
-
-    return (
-      <div>
-        <table border="1">
-		<th>Symbol</th>
-		<th>Description</th>
-		<th>Nominal Value of 1 Lot</th>
-		<th>Pip Value</th>
-		<th>Min Trade Volume</th>
-		<th>Max Trade Volume</th>
-		<th>Margin Rate</th>
-		<th>Trading Hours</th>
-
-          {this.state.todos.map(el => (
-            <tr>
-              <td>{el.symbol}</td>
-              <td>{el.description}</td>
-			  <td>{el.nominalValueOf1Lot}</td>
-              <td>{el.pipValue}</td>
-              <td>{el.minTradeVolume}</td>
-              <td>{el.maxTradeVolume}</td>
-			  <td>{el.marginRate}</td>
-			  <td>{el.tradingHours}</td>
-            </tr>
-          ))}
-        </table>
-      </div>
-    );
-  }
-  }
+    render() {
+        return(
+          <Router>
+          <div className="app">
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/instruments" component={Instruments} />
+            <Route exact path="/register-success" component={RegisterSuccess} />
+          </div>
+          </Router>
+        )
+    }
+}
 
 export default App;
