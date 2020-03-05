@@ -29,6 +29,17 @@ public class User implements UserDetails {
     private Date create_At;
     private Date update_At;
 
+    public float getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(float currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
+    //This is the budget that the user gets initially - should be 10000 dollars
+    private float currentBalance;
+
     //OneToMany with Project
 
     public User() {
