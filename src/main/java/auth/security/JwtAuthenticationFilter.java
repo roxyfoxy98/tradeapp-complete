@@ -14,7 +14,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 
 import static auth.security.SecurityConstants.HEADER_STRING;
 import static auth.security.SecurityConstants.TOKEN_PREFIX;
@@ -39,10 +38,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(StringUtils.hasText(jwt)&& tokenProvider.validateToken(jwt)){
                 Long userId = tokenProvider.getUserIdFromJWT(jwt);
                 User userDetails = customUserDetailsService.loadUserById(userId);
+                System.out.println(userDetails.getAuthorities());
+
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, Collections.emptyList());
-
+                        userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 

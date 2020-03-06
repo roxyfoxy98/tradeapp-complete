@@ -4,11 +4,14 @@ package auth.security;
 import auth.model.User;
 import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static auth.security.SecurityConstants.EXPIRATION_TIME;
 import static auth.security.SecurityConstants.SECRET;
@@ -23,6 +26,7 @@ public class JwtTokenProvider {
         Date now = new Date(System.currentTimeMillis());
 
         Date expiryDate = new Date(now.getTime()+EXPIRATION_TIME);
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         String userId = Long.toString(user.getId());
 
@@ -30,6 +34,8 @@ public class JwtTokenProvider {
         claims.put("id", (Long.toString(user.getId())));
         claims.put("username", user.getUsername());
         claims.put("fullName", user.getFullName());
+        //claims.put("scope",user.getAuthorities());
+        claims.put("Roles",roles);
 
         return Jwts.builder()
                 .setSubject(userId)
