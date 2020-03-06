@@ -2,13 +2,13 @@ package auth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 public class User implements UserDetails {
@@ -28,6 +28,37 @@ public class User implements UserDetails {
     private String confirmPassword;
     private Date create_At;
     private Date update_At;
+    private String roles = "";
+    private String permissions = "";
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
+    }
+
+    public List<String> getPermissionList(){
+        if(this.permissions.length() > 0){
+            return Arrays.asList(this.permissions.split(","));
+        }
+        return new ArrayList<>();
+    }
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
 
     public float getCurrentBalance() {
         return currentBalance;
@@ -42,8 +73,18 @@ public class User implements UserDetails {
 
     //OneToMany with Project
 
+
     public User() {
     }
+
+    public User(String username, String fullName, String password, String roles, String permissions){
+        this.username = username;
+        this.password = password;
+        this.fullName=fullName;
+        this.roles = roles;
+        this.permissions = permissions;
+    }
+
 
     public Long getId() {
         return id;
@@ -115,10 +156,25 @@ public class User implements UserDetails {
     UserDetails interface methods
      */
 
+
+
     @Override
-    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Extract list of permissions (name)
+        this.getPermissionList().forEach(p -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority(p);
+            authorities.add(authority);
+        });
+
+        // Extract list of roles (ROLE_name)
+        this.getRoleList().forEach(r -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
+            authorities.add(authority);
+        });
+
+        return authorities;
     }
 
     @Override
@@ -144,4 +200,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
 }

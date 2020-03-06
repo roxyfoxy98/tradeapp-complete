@@ -4,6 +4,7 @@ package auth.web;
 import auth.model.User;
 import auth.payload.JWTLoginSucessReponse;
 import auth.payload.LoginRequest;
+import auth.repository.UserRepository;
 import auth.security.JwtTokenProvider;
 import auth.service.MapValidationErrorService;
 import auth.service.UserService;
@@ -16,19 +17,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+import java.util.List;
 
 import static auth.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/")
 public class UserController {
+    private UserRepository UserRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.UserRepository = userRepository;
+    }
 
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
@@ -47,7 +50,7 @@ public class UserController {
 
 
 
-    @PostMapping("/login")
+    @PostMapping("api/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result){
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
         if(errorMap != null) return errorMap;
@@ -65,7 +68,7 @@ public class UserController {
         return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt));
     }
 
-    @PostMapping("/register")
+    @PostMapping("api/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result){
         // Validate passwords match
         userValidator.validate(user,result);
@@ -76,5 +79,11 @@ public class UserController {
         User newUser = userService.saveUser(user);
 
         return  new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+    }
+    @GetMapping("admin/users")
+   // @PreAuthorize(("hasAuthority('ROLE_ADMIN')"))
+    public List<User> users(){
+        return this.UserRepository.findAll();
+
     }
 }
